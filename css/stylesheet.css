@@ -1,3 +1,20 @@
 .news_title {
-	
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.news_text {
+
+}
+
+.news_category {
+	font-size: 80%;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.news_date {
+	float: right;
+	font-size: 80%;
+	font-style: italic;
 }

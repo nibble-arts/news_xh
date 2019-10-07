@@ -40,8 +40,32 @@ class Notes {
 				}
 			}
 
-			debug(self::$data);
+			// debug(self::$data);
 		}
+	}
+
+
+	public static function get_category($category) {
+
+		$category = strtolower($category);
+
+		if (isset(self::$data[$category])) {
+			return self::$data[$category];
+		}
+
+		return false;
+	}
+
+
+	public static function get_notes($category, $options = "") {
+
+		$category = strtolower($category);
+
+		if (($cat = self::get_category($category)) !== false) {
+
+			return $cat;
+		}
+
 	}
 }
 

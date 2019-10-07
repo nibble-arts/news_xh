@@ -29,7 +29,7 @@ news\News::init($plugin_cf, $plugin_tx);
 
 // ================================
 // main plugin function call
-function news($function = false, $options) {
+function news($category = false, $options) {
 
 	$o = "";
 	$edit = false;
@@ -46,9 +46,11 @@ function news($function = false, $options) {
 		if (ma\Access::user()) {
 			$edit = ma\Access::user()->is_in_group(news\Config::config("access_admin_group"));
 
-			$o .= "EDIT";
+			// $o .= "EDIT";
 		}
 	}
+
+	$o .= news\News::render($category, $options);
 
 
 	return $o;

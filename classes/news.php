@@ -17,6 +17,19 @@ class News {
 	}
 
 
+	public static function render($category) {
+
+		$note_array = [];
+
+		$notes = Notes::get_category($category);
+
+		foreach ($notes as $note) {
+
+			$note_array[] = $note->render($category) . "<hr>";
+		}
+
+		return implode("<hr>", $note_array);
+	}
 
 }
 
