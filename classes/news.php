@@ -13,24 +13,45 @@ class News {
 		Config::init($config);
 		View::init($text);
 
-		Notes::load(Config::config("path_content"));
+		// Notes::load(Config::config("path_content"));
 	}
 
 
-	public static function render($category) {
+	public static function render($category, $options = false) {
 
 		$note_array = [];
 
-		$notes = Notes::get_category($category);
+		$options = new Options($options);
 
-		foreach ($notes as $note) {
+		Notes::load(Config::config("path_content"), $category);
 
-			$note_array[] = $note->render($category) . "<hr>";
+		$notes = Notes::get_notes($options);
+
+// debug($notes);
+
+		if ($notes) {
+
+			foreach ($notes as $key => $notes) {
+
+				// is node
+				if (is_int($key)) {
+					$note_array[] = $notes->render($category);
+				}
+
+				// is category
+				else {
+					$note_array[] = '<div class="news_category">' . $key . '</div>';
+
+					foreach ($notes as $note) {
+						$note_array[] = $note->render($category);
+					}
+				}
+			}
 		}
+
 
 		return implode("<hr>", $note_array);
 	}
-
 }
 
 ?>

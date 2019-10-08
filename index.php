@@ -29,7 +29,7 @@ news\News::init($plugin_cf, $plugin_tx);
 
 // ================================
 // main plugin function call
-function news($category = false, $options) {
+function news($category = false, $options = false) {
 
 	$o = "";
 	$edit = false;
@@ -51,7 +51,6 @@ function news($category = false, $options) {
 	}
 
 	$o .= news\News::render($category, $options);
-
 
 	return $o;
 }
