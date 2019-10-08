@@ -9,8 +9,8 @@ class Note {
 
 
 	// create note from data array
-	// [title, text, created, modified, start, expire]
-	public function __construct($data) {
+	// [title, text, created, modified, start, expired]
+	public function __construct($data = []) {
 		$this->data = $data;
 	}
 

@@ -13,7 +13,6 @@ class News {
 		Config::init($config);
 		View::init($text);
 
-		// Notes::load(Config::config("path_content"));
 	}
 
 
