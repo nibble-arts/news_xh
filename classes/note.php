@@ -16,22 +16,28 @@ class Note {
 
 
 	// render note
-	public function render($cat = false) {
+	public function render($class = "") {
 
-		$o = "";
+		$o = '<div class="news_block ' . $class . '">';
 
-		$o .= '<div class="news_date">Erstellt: ' . View::date($this->get("created")) . '<br>';
-		$o .= 'Geändert: ' . View::date($this->get("modified")) . '<br>';
-		$o .= 'Ablauf: ' . View::date($this->get("expired")) . '</div>';
+			// title
+			$o .= '<div class="news_title">' . $this->get("title");
 
-		$o .= '<div class="news_title">' . $this->get("title");
+				if ($this->get("category")) {
+					$o .= '<div class="news_category">' . ucfirst($this->get("category")) . '</div>';
+				}
 
-		if ($cat) {
-			$o .= '<div class="news_category">' . $cat . '</div>';
-		}
+			$o .= '</div>';
+
+
+			// create date
+			$o .= '<div class="news_date">' . View::date($this->get("created")) . '</div>';
+
+
+			// text
+			$o .= '<div class="news_text">' . $this->get("text") . '</div>';
 
 		$o .= '</div>';
-		$o .= '<div class="news_text">' . $this->get("text") . '</div>';
 
 		return $o;
 	}

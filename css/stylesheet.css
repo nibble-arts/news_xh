@@ -1,5 +1,14 @@
+.news_block {
+	border-bottom: 1px solid grey;
+	margin-bottom: 10px;
+}
+
+.news_tab {
+	margin-left: 20px;
+}
+
 .news_title {
-	font-size: 110%;
+	font-size: /*110*/%;
 	font-weight: bold;
 }
 
@@ -10,6 +19,7 @@
 .news_category_title {
 	font-size: 120%;
 	font-weight: bold;
+	margin-bottom: 10px;
 }
 
 .news_category {
@@ -19,7 +29,7 @@
 }
 
 .news_date {
-	float: right;
-	font-size: 80%;
+	/*float: right;*/
+	font-size: 60%;
 	font-style: italic;
 }

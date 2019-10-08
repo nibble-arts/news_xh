@@ -33,6 +33,7 @@ class Notes {
 		// get category directories
 		$dirs = scandir($path);
 
+
 		// collect categories
 		foreach ($dirs as $dir) {
 
@@ -96,24 +97,39 @@ class Notes {
 		// sort group content
 		if ($group) {
 
-			// order nodes of category
-			if ($order = $options->order()) {
+			// iterate categories
+			foreach ($order_notes as $key => $nodes) {
 
-				// iterate categories
-				foreach ($order_notes as $key => $nodes) {
-
+				// sort nodes of category
+				if ($order = $options->order()) {
 					$ordered = self::order_by_key($nodes, $key, $dir);
-					$ordered = self::filter($ordered, $options->filter());	
-
-					$order_notes[$key] = $ordered;
 				}
+				else {
+					$ordered = $nodes;
+				}
+
+				// filter  notes
+				$ordered = self::filter($ordered, $options->filter());	
+
+				// add to category
+				$order_notes[$key] = $ordered;
 			}
 		}
 
+
 		// sort notes
-		elseif ($order = $options->order()) {
-			$ordered = self::order_by_key($order_notes, $order, $dir);
-			$ordered_notes = self::filter($ordered, $options->filter());
+		else {
+
+			// sort nodes
+			if ($order = $options->order()) {
+				$ordered = self::order_by_key($order_notes, $order, $dir);
+			}
+			else {
+				$ordered = $order_notes;
+			}
+
+			// filter notes
+			$order_notes = self::filter($ordered, $options->filter());
 		}
 
 
@@ -126,12 +142,36 @@ class Notes {
 
 		$ret_notes = [];
 
-		foreach ($notes as $note) {
-echo "<hr>";
-			debug($note->created());
-			debug($note->start());
-			debug($note->expired());
+		if ($filter) {
+
+			$filter_ary = explode(":", $filter);
+
+			// select filter
+			switch ($filter_ary[0]) {
+
+
+				// limit to n entries
+				case "count":
+					$notes = array_slice($notes, 0, $filter_ary[1]);
+					break;
+
+
+				// filter by time
+				case "time":
+				debug($filter_ary);
+					break;
+
+			}
+
 		}
+
+
+
+		// foreach ($notes as $note) {
+		// 	debug($note->created());
+		// 	debug($note->start());
+		// 	debug($note->expired());
+		// }
 
 		return $notes;
 	}

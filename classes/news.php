@@ -34,7 +34,7 @@ class News {
 
 				// is node
 				if (is_int($key)) {
-					$note_array[] = $notes->render($category);
+					$note_array[] = $notes->render();
 				}
 
 				// is category
@@ -43,14 +43,14 @@ class News {
 					$note_array[] = '<div class="news_category_title">' . ucfirst($key) . '</div>';
 
 					foreach ($notes as $note) {
-						$note_array[] = $note->render($category);
+						$note_array[] = $note->render('news_tab');
 					}
 				}
 			}
 		}
 
 
-		return implode("<hr>", $note_array);
+		return implode("", $note_array);
 	}
 }
 
