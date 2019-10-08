@@ -24,11 +24,10 @@ class News {
 		$options = new Options($options);
 
 		Notes::load(Config::config("path_content"), $category);
-
 		$notes = Notes::get_notes($options);
 
-// debug($notes);
 
+		// notes found
 		if ($notes) {
 
 			foreach ($notes as $key => $notes) {
@@ -40,7 +39,8 @@ class News {
 
 				// is category
 				else {
-					$note_array[] = '<div class="news_category">' . $key . '</div>';
+
+					$note_array[] = '<div class="news_category_title">' . ucfirst($key) . '</div>';
 
 					foreach ($notes as $note) {
 						$note_array[] = $note->render($category);

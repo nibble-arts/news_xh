@@ -1,10 +1,15 @@
 .news_title {
-	font-size: 120%;
+	font-size: 110%;
 	font-weight: bold;
 }
 
 .news_text {
 
+}
+
+.news_category_title {
+	font-size: 120%;
+	font-weight: bold;
 }
 
 .news_category {

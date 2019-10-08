@@ -26,6 +26,15 @@ class View {
 			return $code;
 		}
 	}
+
+
+	// return timestamp as human readable date
+	public static function date ($timestamp) {
+
+		if ($timestamp > 0) {
+			return date("d.m.Y", $timestamp);
+		}
+	}
 }
 
 ?>

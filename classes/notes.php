@@ -14,6 +14,8 @@ class Notes {
 		// create path
 		$path = $path . "news/";
 		$cat_array = [];
+		self::$data = [];
+
 
 		// split category string by comma
 		if (is_string($category)) {
@@ -73,6 +75,9 @@ class Notes {
 	public static function get_notes($options = []) {
 
 
+		$order_notes = self::$data;
+
+
 		// set default order direction
 		if (!($dir = $options->dir())) $dir = "asc";
 
@@ -80,10 +85,10 @@ class Notes {
 		// group notes and sort groups
 		if ($group = $options->group()) {
 
-			self::$data = self::group_by_key($group);
+			$order_notes = self::group_by_key($group);
 
 			if ($group_dir = $options->group_dir()) {
-				self::$data = self::order_group($group_dir);
+				$order_notes = self::order_group($group_dir);
 			}
 		}
 
@@ -94,28 +99,41 @@ class Notes {
 			// order nodes of category
 			if ($order = $options->order()) {
 
-				foreach (self::$data as $key => $nodes) {
-					self::$data[$key] = self::order_by_key($nodes, $key, $dir);
+				// iterate categories
+				foreach ($order_notes as $key => $nodes) {
+
+					$ordered = self::order_by_key($nodes, $key, $dir);
+					$ordered = self::filter($ordered, $options->filter());	
+
+					$order_notes[$key] = $ordered;
 				}
 			}
-
 		}
-
 
 		// sort notes
 		elseif ($order = $options->order()) {
-			self::$data = self::order_by_key(self::$data, $order, $dir);
+			$ordered = self::order_by_key($order_notes, $order, $dir);
+			$ordered_notes = self::filter($ordered, $options->filter());
 		}
 
 
-		return self::$data;
+		return $order_notes;
 	}
 
 
 	// filter notes list
-	private static function filter($filter) {
+	private static function filter($notes,$filter) {
 
+		$ret_notes = [];
 
+		foreach ($notes as $note) {
+echo "<hr>";
+			debug($note->created());
+			debug($note->start());
+			debug($note->expired());
+		}
+
+		return $notes;
 	}
 
 
