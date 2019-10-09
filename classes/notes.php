@@ -156,24 +156,46 @@ class Notes {
 					break;
 
 
-				// filter by time
+				// filter by time string
+				// +-n days/months/years
 				case "time":
-				debug($filter_ary);
+
+					$limit_time = strtotime($filter_ary[1], time());
+					$notes = self::get_time_range($notes, $limit_time);
 					break;
 
 			}
 
 		}
 
-
-
-		// foreach ($notes as $note) {
-		// 	debug($note->created());
-		// 	debug($note->start());
-		// 	debug($note->expired());
-		// }
-
 		return $notes;
+	}
+
+
+	// get notes in time range of start date
+	private static function get_time_range($notes, $start, $end = false) {
+
+		$ret_notes = [];
+
+		// no end -> use current time
+		if (!$end) {
+			$end = time();
+		}
+
+
+		// collect matching notes
+		foreach ($notes as $note) {
+
+			if ($note_time = $note->start()) {
+
+				// is between start and end time
+				if ($note_time >= $start && $note_time <= $end) {
+					$ret_notes[] = $note;
+				}
+			}
+		}
+
+		return $ret_notes;
 	}
 
 

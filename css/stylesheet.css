@@ -33,3 +33,10 @@
 	font-size: 60%;
 	font-style: italic;
 }
+
+.news_add {
+	margin-bottom: 10px;
+	float: right;
+	border: solid 1px grey;
+	padding: 3px;
+}

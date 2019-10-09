@@ -32,22 +32,10 @@ news\News::init($plugin_cf, $plugin_tx);
 function news($category = false, $options = false) {
 
 	$o = "";
-	$edit = false;
-
-// debug($options);
-
 
 	// memberaccess installed
-	if (class_exists("ma\Access")) {
-		// $o .= "Member access plugin found";
-
-		// check if write permission from memberaccess is granted
-		// $edit = admin group || false
-		if (ma\Access::user()) {
-			$edit = ma\Access::user()->is_in_group(news\Config::config("access_admin_group"));
-
-			// $o .= "EDIT";
-		}
+	if (class_exists("ma\Access") && ma\Access::user()) {
+		$o .= news\View::add_note();
 	}
 
 	$o .= news\News::render($category, $options);

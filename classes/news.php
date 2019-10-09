@@ -13,43 +13,56 @@ class News {
 		Config::init($config);
 		View::init($text);
 
+		Session::load();
+
+		self::action();
+
 	}
 
 
+	// add note
+	public static function action() {
+
+	}
+
+
+	// render notes
 	public static function render($category, $options = false) {
 
-		$note_array = [];
+		$o = "";
 
-		$options = new Options($options);
+		// select special function
+		switch ($category) {
 
-		Notes::load(Config::config("path_content"), $category);
-		$notes = Notes::get_notes($options);
+			case "_add":
+				$o .= View::news_form();
+				break;
 
 
-		// notes found
-		if ($notes) {
+			case "_edit":
 
-			foreach ($notes as $key => $notes) {
 
-				// is node
-				if (is_int($key)) {
-					$note_array[] = $notes->render();
-				}
 
-				// is category
-				else {
+				$o .= View::news_form($options->get("news_id"));
+				break;
 
-					$note_array[] = '<div class="news_category_title">' . ucfirst($key) . '</div>';
 
-					foreach ($notes as $note) {
-						$note_array[] = $note->render('news_tab');
-					}
-				}
-			}
+			default:
+
+				// $t = class_exists("\ma\Access");
+				// \ma\Access::user();
+
+				// memberaccess installed
+				// if ($t) {
+				// 	$o .= news\View::add_note();
+				// }
+
+				$o .= View::note_list($category, $options);
+				break;
+
 		}
 
-
-		return implode("", $note_array);
+		return $o;
 	}
 }
 

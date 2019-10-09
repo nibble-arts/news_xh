@@ -22,6 +22,14 @@ news("\{category_list\}"\[,"\{attributes\}"\])
 
 The category list can contain one or more category names, separated by a comma. An empty string will show all notes from all categories.
 
+##Category
+The category parameter has two functions. Primary a comma separated list of categories can filter the corresponding notes. If the paramter is empty, all notes are shown.
+
+The second use of the paramter is calling special functions. All function calls start with an _ character.
+
+###\_add
+The \_add function shows a form to enter a new note.
+
 ##Attributes
 The attribute string can contain a comma separated list of attributes of the format *key=value*. The following attributes are supported.
 
