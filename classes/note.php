@@ -7,6 +7,15 @@ class Note {
 
 	private $data;
 
+	private $struct = [
+		"title",
+		"text",
+		"created",
+		"start",
+		"modified",
+		"expired"
+	];
+
 
 	// create note from data array
 	// [title, text, created, modified, start, expired]
