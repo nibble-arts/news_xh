@@ -33,11 +33,19 @@ function news($category = false, $options = false) {
 
 	$o = "";
 
+	// create oprions object
+	$options = new news\Options($options);
+
+
 	// memberaccess installed
-	if (class_exists("ma\Access") && ma\Access::user()) {
-		$o .= news\View::add_note();
+	// and logged
+	// and user is in news access group
+	if (class_exists("ma\Access") && ma\Access::user() && ma\Groups::user_is_in_group(ma\Access::user()->username(), news\Config::config("access_admin_group"))) {
+
+		$options->set("edit", "true");
 	}
 
+	// render notes
 	$o .= news\News::render($category, $options);
 
 	return $o;

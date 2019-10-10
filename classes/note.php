@@ -25,9 +25,18 @@ class Note {
 
 
 	// render note
-	public function render($class = "") {
+	// class: optional additional block class
+	// edit: if true, edit enabled
+	public function render($class = "", $edit = false) {
 
 		$o = '<div class="news_block ' . $class . '">';
+
+			// add edit link
+			if ($edit) {
+				// $o = '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $this->get("category") . '">';
+					$o .= View::text("note_edit");
+				// $o .= '</a>';
+			}
 
 			// title
 			$o .= '<div class="news_title">' . $this->get("title");
@@ -35,13 +44,10 @@ class Note {
 				if ($this->get("category")) {
 					$o .= '<div class="news_category">' . ucfirst($this->get("category")) . '</div>';
 				}
-
 			$o .= '</div>';
 
-
-			// create date
+			// creation date
 			$o .= '<div class="news_date">' . View::date($this->get("created")) . '</div>';
-
 
 			// text
 			$o .= '<div class="news_text">' . $this->get("text") . '</div>';

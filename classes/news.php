@@ -34,28 +34,18 @@ class News {
 		// select special function
 		switch ($category) {
 
-			case "_add":
-				$o .= View::news_form();
-				break;
-
-
+			// add note if new_file is empty
+			// edit note file
 			case "_edit":
-
-
-
-				$o .= View::news_form($options->get("news_id"));
+				$o .= View::news_form(implode("/", [Session::param("news_cat"), Session::param("news_edit")]));
 				break;
 
 
 			default:
 
-				// $t = class_exists("\ma\Access");
-				// \ma\Access::user();
-
-				// memberaccess installed
-				// if ($t) {
-				// 	$o .= news\View::add_note();
-				// }
+				if ($options->edit()) {
+					$o .= View::add_note();
+				}
 
 				$o .= View::note_list($category, $options);
 				break;

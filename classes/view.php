@@ -41,7 +41,6 @@ class View {
 	public static function note_list($category, $options) {
 
 		$note_array = [];
-		$options = new Options($options);
 
 		Notes::load(Config::config("path_content"), $category);
 		$notes = Notes::get_notes($options);
@@ -54,7 +53,7 @@ class View {
 
 				// is node
 				if (is_int($key)) {
-					$note_array[] = $notes->render();
+					$note_array[] = $notes->render("", $options->edit());
 				}
 
 				// is category
@@ -63,7 +62,7 @@ class View {
 					$note_array[] = '<div class="news_category_title">' . ucfirst($key) . '</div>';
 
 					foreach ($notes as $note) {
-						$note_array[] = $note->render('news_tab');
+						$note_array[] = $note->render('news_tab', $options->edit());
 					}
 				}
 			}
@@ -77,7 +76,7 @@ class View {
 	// add note dialog
 	public static function add_note() {
 
-		$o = '<div class="news_add"><a href="?' . Config::config("note_add_page") . '">';
+		$o = '<div class="news_add"><a href="?' . Config::config("note_edit_page") . '">';
 			$o .= View::text("note_add");
 		$o .= '</a></div>';
 
@@ -86,11 +85,62 @@ class View {
 
 
 	// news form
-	public static function news_form($id = false) {
+	public static function news_form($file = false) {
 
 		$o = "";
+		$new = true;
 
-		$o .= '<div class="news_title">' . View::text("note_add") . '</div>';
+		// load file to edit
+		if ($file) {
+debug($file);
+			$new = false;
+		}
+
+		// form
+		$o .= '<form method="post" action="' . '">';
+
+			$o .= '<div if="ta" class="news_title">' . View::text("note_add") . '</div>';
+
+			$o .= '<div>';
+				$o .= '<div class="news_label">' . View::text("note_title") . '</div>';
+
+				$o .= HTML::input([
+					"type" => "text",
+					"name" => "news_title",
+					"size" => 50
+				]);
+			$o .= '</div>';
+
+			$o .= '<div>';
+				$o .= '<div class="news_label">' . View::text("note_text") . '</div>';
+				$o .= HTML::textarea(["name" => "news_text", "rows" => 20]);
+			$o .= '</div>';
+
+
+			// add new note
+			if ($new) {
+
+				$o .= '<div>';
+					$o .= HTML::input([
+						"type" => "submit",
+						"name" => "action",
+						"value" => View::text("note_add")
+					]);
+				$o .= '</div>';
+			}
+
+			// save changes
+			else {
+				$o .= '<div>';
+					$o .= HTML::input([
+						"type" => "submit",
+						"name" => "action",
+						"value" => View::text("note_save")
+					]);
+				$o .= '</div>';
+			}
+
+		$o .= '</form>';
 
 		return $o;
 	}

@@ -8,13 +8,19 @@ class Options {
 
 
 	public function __construct($options) {
-
 		$this->parse($options);
+	}
+
+
+	// set key val pair
+	public function set($key, $value) {
+		$this->options[$key] = $value;
 	}
 
 
 	// get val by key
 	public function get($key) {
+
 		if (isset($this->options[$key])) {
 			return $this->options[$key];
 		}
@@ -36,7 +42,6 @@ class Options {
 
 		$ret_array = [];
 		$this->options = [];
-
 
 		// is array
 		if (is_array($options)) {
@@ -61,7 +66,7 @@ class Options {
 					$temp = explode("=", $val);
 
 					if (count($temp) > 1) {
-						$this->options[$temp[0]] = $temp[1];
+						$this->set($temp[0], $temp[1]);
 					}
 				}
 			}
