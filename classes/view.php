@@ -77,7 +77,9 @@ class View {
 	public static function add_note() {
 
 		$o = '<div class="news_add"><a href="?' . Config::config("note_edit_page") . '">';
-			$o .= View::text("note_add");
+
+			$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit_red.png" title="' . View::text("note_add") . '">';
+
 		$o .= '</a></div>';
 
 		return $o;
@@ -90,11 +92,17 @@ class View {
 		$o = "";
 		$new = true;
 
+		$data = new Note();
+
 		// load file to edit
 		if ($file) {
-debug($file);
+
+			$file = $file . ".ini";
 			$new = false;
+
+			$data->load(Config::config("path_content") . 'news/', $file);
 		}
+
 
 		// form
 		$o .= '<form method="post" action="' . '">';
@@ -107,13 +115,18 @@ debug($file);
 				$o .= HTML::input([
 					"type" => "text",
 					"name" => "news_title",
-					"size" => 50
+					"size" => 50,
+					"value" => $data->title()
 				]);
 			$o .= '</div>';
 
 			$o .= '<div>';
 				$o .= '<div class="news_label">' . View::text("note_text") . '</div>';
-				$o .= HTML::textarea(["name" => "news_text", "rows" => 20]);
+				$o .= HTML::textarea(
+					["name" => "news_text",
+					"rows" => 20,
+					"content" => $data->text()
+				]);
 			$o .= '</div>';
 
 
@@ -123,10 +136,15 @@ debug($file);
 				$o .= '<div>';
 					$o .= HTML::input([
 						"type" => "submit",
-						"name" => "action",
 						"value" => View::text("note_add")
 					]);
 				$o .= '</div>';
+
+				$o .= HTML::input([
+					"type" => "hidden",
+					"name" => "action",
+					"value" => View::text("note_add")
+				]);
 			}
 
 			// save changes
@@ -134,10 +152,15 @@ debug($file);
 				$o .= '<div>';
 					$o .= HTML::input([
 						"type" => "submit",
-						"name" => "action",
 						"value" => View::text("note_save")
 					]);
 				$o .= '</div>';
+
+				$o .= HTML::input([
+					"type" => "hidden",
+					"name" => "action",
+					"value" => View::text("note_update")
+				]);
 			}
 
 		$o .= '</form>';

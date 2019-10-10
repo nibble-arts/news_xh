@@ -24,6 +24,26 @@ class Note {
 	}
 
 
+	// load note file from path
+	public function load($path, $file) {
+
+		$this->data = parse_ini_file($path . $file);
+		$this->set("file", pathinfo($file, PATHINFO_FILENAME));
+	}
+
+
+	// save note to file
+	public function save($category, $file) {
+
+		// has file and category
+		if ($this->get("file") != "" && $category != "") {
+
+			$path = Config::config("path_content") . 'news/' . $category . $file . ".ini";
+debug($path);
+		}
+	}
+
+
 	// render note
 	// class: optional additional block class
 	// edit: if true, edit enabled
@@ -33,9 +53,10 @@ class Note {
 
 			// add edit link
 			if ($edit) {
-				// $o = '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $this->get("category") . '">';
-					$o .= View::text("note_edit");
-				// $o .= '</a>';
+
+				$o .= '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $this->get("category") . '&news_edit=' . $this->get("file") . '">';
+					$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit_green.png" title="' . View::text("note_edit") . '">';
+				$o .= '</a>';
 			}
 
 			// title

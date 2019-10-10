@@ -23,6 +23,7 @@ class News {
 	// add note
 	public static function action() {
 
+		debug(Session::param("action"));
 	}
 
 

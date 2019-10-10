@@ -53,7 +53,8 @@ class Notes {
 
 						// create note
 						// add category
-						$data = new Note(parse_ini_file($path . $dir . "/" . $file));
+						$data = new Note();
+						$data->load($path . $dir . "/", $file);
 						$data->set("category", $dir);
 
 						self::$data[] = $data;
@@ -208,7 +209,7 @@ class Notes {
 			
 			if ($val = $note->get($key)) {
 
-				$note->remove($key);
+				// $note->remove($key);
 				$ret_array[$val][] = $note;
 			}
 		}
