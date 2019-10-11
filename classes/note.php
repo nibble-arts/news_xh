@@ -27,8 +27,11 @@ class Note {
 	// load note file from path
 	public function load($path, $file) {
 
-		$this->data = parse_ini_file($path . $file);
-		$this->set("file", pathinfo($file, PATHINFO_FILENAME));
+		if ($path != "" && $file != "") {
+
+			$this->data = parse_ini_file($path . $file);
+			$this->set("file", pathinfo($file, PATHINFO_FILENAME));
+		}
 	}
 
 

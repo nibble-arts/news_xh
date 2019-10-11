@@ -23,13 +23,25 @@ class News {
 	// add note
 	public static function action() {
 
-		debug(Session::param("action"));
-		debug(Session::debug());
+		switch (Session::param("action")) {
 
-		debug("category: ".Session::param("news_cat"));
-		debug("title: ".Session::param("title"));
-		debug("text: ".Session::param("news_text"));
-		debug("modified: ".time());
+			case "note_update":
+		
+				$new_note = new Note();
+
+				$new_note->set("category", Session::param("news_cat"));
+				$new_note->set("title", Session::param("title"));
+				$new_note->set("text", Session::param("news_text"));
+				$new_note->set("text", Session::param("news_text"));
+				$new_note->set("created", Session::param("news_created"));
+				$new_note->set("modified", time());
+				$new_note->set("expired", Session::param("news_expired"));
+
+				$new_note->save(Session::param("news_cat"), Session::param("news_file"));
+
+				break;
+		}
+
 	}
 
 
@@ -44,7 +56,7 @@ class News {
 			// add note if new_file is empty
 			// edit note file
 			case "_edit":
-				$o .= View::news_form(implode("/", [Session::param("news_cat"), Session::param("news_edit")]));
+				$o .= View::news_form(implode("/", [Session::param("news_cat"), Session::param("news_file")]));
 				break;
 
 

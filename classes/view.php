@@ -84,7 +84,7 @@ class View {
 			// add edit link
 			if ($edit) {
 
-				$o .= '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $note->get("category") . '&news_edit=' . $note->get("file") . '">';
+				$o .= '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $note->get("category") . '&news_file=' . $note->get("file") . '">';
 					$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit.png" title="' . View::text("note_edit") . '">';
 				$o .= '</a>';
 			}
@@ -207,6 +207,18 @@ class View {
 						"value" => View::text("note_update")
 					]);
 				}
+
+				$o .= HTML::input([
+					"type" => "hidden",
+					"name" => "news_created",
+					"value" => $data->created()
+				]);
+
+				$o .= HTML::input([
+					"type" => "hidden",
+					"name" => "news_expiredd",
+					"value" => $data->expired()
+				]);
 
 			$o .= '</div>';
 
