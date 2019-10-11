@@ -36,13 +36,38 @@ class Note {
 
 
 	// save note to file
-	public function save($category, $file) {
+	public function save($category, $file = false) {
+
+		$path = Config::config("path_content") . 'news/' . $category . '/';
+
+		// if no file name as param -> get own filename
+		if (!$file) {
+			$file = $this->get("file");
+		}
+
+		// no filename at all -> create new file
+		if (!$file) {
+			$file = uniqid();
+		}
+
+		// if not exists -> create new category
+		if (!file_exists($path)) {
+			mkdir($path);
+		}
 
 		// has file and category
-		if ($this->get("file") != "" && $category != "") {
+		if ($file != "" && $category != "") {
 
-			$path = Config::config("path_content") . 'news/' . $category . $file . ".ini";
+			$path = $path . $file . ".ini";
+
+//TODO create ini class to read an write
+
+			// $ini = new Ini();
+			// $ini->load($this->data);
+			// file_put_contents($path, $ini);
+
 debug($path);
+debug($this->data);
 		}
 	}
 
@@ -58,6 +83,8 @@ debug($path);
 	// add data value
 	public function set($key, $value) {
 		$this->data[$key] = $value;
+
+		return $value;
 	}
 
 
