@@ -24,6 +24,12 @@ class News {
 	public static function action() {
 
 		debug(Session::param("action"));
+		debug(Session::debug());
+
+		debug("category: ".Session::param("news_cat"));
+		debug("title: ".Session::param("title"));
+		debug("text: ".Session::param("news_text"));
+		debug("modified: ".time());
 	}
 
 
