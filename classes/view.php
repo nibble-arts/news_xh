@@ -73,12 +73,48 @@ class View {
 	}
 
 
+	// render note
+	// $note: note object
+	// class: optional additional class for note block
+	// edit: true -> has edit rights
+	public static function note($note, $class, $edit) {
+
+		$o = '<div class="news_block ' . $class . '">';
+
+			// add edit link
+			if ($edit) {
+
+				$o .= '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $note->get("category") . '&news_edit=' . $note->get("file") . '">';
+					$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit.png" title="' . View::text("note_edit") . '">';
+				$o .= '</a>';
+			}
+
+			// title
+			$o .= '<div class="news_title">' . $note->get("title");
+
+				if ($note->get("category")) {
+					$o .= '<div class="news_category">' . ucfirst($note->get("category")) . '</div>';
+				}
+			$o .= '</div>';
+
+			// creation date
+			$o .= '<div class="news_date">' . View::date($note->get("created")) . '</div>';
+
+			// text
+			$o .= '<div class="news_text">' . $note->get("text") . '</div>';
+
+		$o .= '</div>';
+
+		return $o;
+	}
+
+
 	// add note dialog
 	public static function add_note() {
 
 		$o = '<div class="news_add"><a href="?' . Config::config("note_edit_page") . '">';
 
-			$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit_red.png" title="' . View::text("note_add") . '">';
+			$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/add.png" title="' . View::text("note_add") . '">';
 
 		$o .= '</a></div>';
 
@@ -109,7 +145,17 @@ class View {
 
 			$o .= '<div if="ta" class="news_title">' . View::text("note_add") . '</div>';
 
-			$o .= '<div>';
+
+			$o .= '<div class="news_form_block">';
+				$o .= '<div class="news_label">' . View::text("note_category") . '</div>';
+
+				// get category list
+				Notes::load(Config::config("path_content"));
+				$o .= HTML::select(Notes::get_categories(),["name" => "news_cat", "selected" => Session::param("news_cat")]);
+			$o .= '</div>';
+
+
+			$o .= '<div class="news_form_block">';
 				$o .= '<div class="news_label">' . View::text("note_title") . '</div>';
 
 				$o .= HTML::input([
@@ -120,7 +166,8 @@ class View {
 				]);
 			$o .= '</div>';
 
-			$o .= '<div>';
+
+			$o .= '<div class="news_form_block">';
 				$o .= '<div class="news_label">' . View::text("note_text") . '</div>';
 				$o .= HTML::textarea(
 					["name" => "news_text",
@@ -130,38 +177,38 @@ class View {
 			$o .= '</div>';
 
 
-			// add new note
-			if ($new) {
+			$o .= '<div class="news_form_block">';
 
-				$o .= '<div>';
+				// add new note
+				if ($new) {
+
 					$o .= HTML::input([
 						"type" => "submit",
 						"value" => View::text("note_add")
 					]);
-				$o .= '</div>';
 
-				$o .= HTML::input([
-					"type" => "hidden",
-					"name" => "action",
-					"value" => View::text("note_add")
-				]);
-			}
+					$o .= HTML::input([
+						"type" => "hidden",
+						"name" => "action",
+						"value" => View::text("note_add")
+					]);
+				}
 
-			// save changes
-			else {
-				$o .= '<div>';
+				// save changes
+				else {
 					$o .= HTML::input([
 						"type" => "submit",
 						"value" => View::text("note_save")
 					]);
-				$o .= '</div>';
 
-				$o .= HTML::input([
-					"type" => "hidden",
-					"name" => "action",
-					"value" => View::text("note_update")
-				]);
-			}
+					$o .= HTML::input([
+						"type" => "hidden",
+						"name" => "action",
+						"value" => View::text("note_update")
+					]);
+				}
+
+			$o .= '</div>';
 
 		$o .= '</form>';
 

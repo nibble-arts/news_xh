@@ -28,11 +28,27 @@ class HTML {
 	// select section
 	public static function select($opts, $attr) {
 		
+		$selected = false;
+
+		// check for selected
+		if (isset($attr["selected"])) {
+			$selected = $attr["selected"];
+
+			unset ($attr["selected"]);
+		}
+
 		$o = "<select " . self::serialise ($attr) . ">";
 
 		foreach ($opts as $opt) {
-			$o .= "<option>";
-			 $o .= $opt;
+
+
+			$o .= "<option";
+				if ($opt == $selected) {
+					$o .= " selected";
+				}
+			$o .= ">";
+
+				$o .= $opt;
 			$o .= "</option>";
 		}
 		

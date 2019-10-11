@@ -5,16 +5,24 @@ namespace news;
 
 class Notes {
 
+
+	private static $categories;
 	private static $data;
 
 
 	// load notes
-	public static function load($path, $category) {
+	public static function load($path, $category = false) {
 
 		// create path
 		$path = $path . "news/";
 		$cat_array = [];
 		self::$data = [];
+		self::$categories = [];
+
+
+		if (!$category) {
+			$category = "";
+		}
 
 
 		// split category string by comma
@@ -43,6 +51,10 @@ class Notes {
 			// category array not empty -> show all
 			if (($dir != "." && $dir != "..") && (in_array(strtolower($dir), $match_array) || count($match_array) == 0))  {
 
+				// save category
+				self::$categories[] = $dir;
+
+
 				// get files
 				$files = scandir($path . $dir);
 
@@ -63,7 +75,7 @@ class Notes {
 			}
 		}
 
-		// debug(self::$data);
+// debug(self::$categories);
 	}
 
 
@@ -135,6 +147,12 @@ class Notes {
 
 
 		return $order_notes;
+	}
+
+
+	// get category list
+	public static function get_categories() {
+		return self::$categories;
 	}
 
 
