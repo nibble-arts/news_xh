@@ -8,6 +8,8 @@ namespace news;
 
 class Session {
 	
+	private static $get;
+	private static $post;
 	private static $params;		// http values
 	private static $cookies;	// cookie values
 	private static $session;	// session values
@@ -23,6 +25,8 @@ class Session {
 		
 		self::start();
 
+		self::$get = $_GET;
+		self::$post = $_POST;
 		self::$params = $_REQUEST;
 		self::$cookies = $_COOKIE;
 		self::$session = $_SESSION;
@@ -84,7 +88,31 @@ class Session {
 	}
 
 
-	// get parameter
+	// get GET parameter
+	public static function get($name) {
+		
+		if (isset(self::$get[$name])) {
+			return self::$get[$name];
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
+	// get POST parameter
+	public static function post($name) {
+		
+		if (isset(self::$post[$name])) {
+			return self::$post[$name];
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
+	// get GET and POSt parameter
 	public static function param($name) {
 		
 		if (isset(self::$params[$name])) {
