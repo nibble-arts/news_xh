@@ -38,20 +38,20 @@ class Session {
 	
 	// get session value
 	// http before session before cookie
-	public static function get ($name) {
+	// public static function get ($name) {
 
-		// get http param
-		if (!$val = self::param($name)) {
+	// 	// get http param
+	// 	if (!$val = self::param($name)) {
 		
-			if (!$val = self::session($name)) {
+	// 		if (!$val = self::session($name)) {
 
-				// not present, try cookie
-				$val = self::cookie($name);
-			}
-		}
+	// 			// not present, try cookie
+	// 			$val = self::cookie($name);
+	// 		}
+	// 	}
 
-		return $val;
-	}
+	// 	return $val;
+	// }
 	
 
 	// set session and cookie value
