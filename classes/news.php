@@ -11,7 +11,8 @@ class News {
 	public static function init($config, $text) {
 
 		Config::init($config);
-		View::init($text);
+
+		Text::init($text["news"]);
 
 		Session::load();
 
@@ -29,13 +30,15 @@ class News {
 		
 				$new_note = new Note();
 
-				$new_note->set("category", Session::param("news_cat"));
-				$new_note->set("title", Session::param("title"));
-				$new_note->set("text", Session::param("news_text"));
-				$new_note->set("text", Session::param("news_text"));
-				$new_note->set("created", Session::param("news_created"));
-				$new_note->set("modified", time());
-				$new_note->set("expired", Session::param("news_expired"));
+				$new_note->set([
+					"category" => Session::param("news_cat"),
+					"title" => Session::param("news_title"),
+					"text" => Session::param("news_text"),
+					"text" => Session::param("news_text"),
+					"created" => Session::param("news_created"),
+					"modified" => time(),
+					"expired" => Session::param("news_expired")
+				]);
 
 				$new_note->save(Session::param("news_cat"), Session::param("news_file"));
 

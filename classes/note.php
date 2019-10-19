@@ -20,7 +20,8 @@ class Note {
 	// create note from data array
 	// [title, text, created, modified, start, expired]
 	public function __construct($data = []) {
-		$this->data = $data;
+
+		$this->init($data);
 	}
 
 
@@ -29,8 +30,25 @@ class Note {
 
 		if ($path != "" && $file != "") {
 
-			$this->data = parse_ini_file($path . $file);
-			$this->set("file", pathinfo($file, PATHINFO_FILENAME));
+			if (file_exists($path . $file)) {
+
+				$this->set(parse_ini_file($path . $file));
+				$this->set("file", pathinfo($file, PATHINFO_FILENAME));
+			}
+		}
+	}
+
+
+	// init the array and set data
+	public function init($new_data) {
+
+		foreach ($this->struct as $element) {
+
+			$this->data[$element] = "";
+
+			if (is_array($new_data) && isset($new_data[$element])) {
+				$this->data[$element] = $new_data[$element];
+			}
 		}
 	}
 
@@ -38,11 +56,14 @@ class Note {
 	// save note to file
 	public function save($category, $file = false) {
 
-		$path = Config::config("path_content") . 'news/' . $category . '/';
+		if (!$this->data["created"]) {
+			$this->data["created"] = time();
+		}
 
 		// if no file name as param -> get own filename
 		if (!$file) {
 			$file = $this->get("file");
+			$this->data["modified"] = time();
 		}
 
 		// no filename at all -> create new file
@@ -50,24 +71,36 @@ class Note {
 			$file = uniqid();
 		}
 
+		$cat_path = Config::config("path_content") . 'news/' . $category . '/';
+		$old_cat_path = Config::config("path_content") . 'news/' . Session::param("news_old_cat") . '/';
+
 		// if not exists -> create new category
-		if (!file_exists($path)) {
-			mkdir($path);
+		if (!file_exists($cat_path)) {
+			mkdir($cat_path);
 		}
 
 		// has file and category
 		if ($file != "" && $category != "") {
 
-			$path = $path . $file . ".ini";
+			// create ini
+			$ini = new Ini();
+			$ini->load($this->data);
 
-//TODO create ini class to read an write
+			// save
+			if ($ini->save($cat_path . $file . ".ini")) {
 
-			// $ini = new Ini();
-			// $ini->load($this->data);
-			// file_put_contents($path, $ini);
+				Message::success("note_saved");
 
-debug($path);
-debug($this->data);
+				// if saved and moved to other category -> clear old entry
+				if ($cat_path != $old_cat_path) {
+					unlink($old_cat_path . $file . ".ini");
+				}
+			}
+
+			// save failure
+			else {
+				Message::failure("note_save_failure");
+			}
 		}
 	}
 
@@ -81,8 +114,17 @@ debug($this->data);
 
 
 	// add data value
-	public function set($key, $value) {
-		$this->data[$key] = $value;
+	public function set($key, $value = false) {
+
+		// set from array
+		if (is_array($key)) {
+			$this->data = $key;
+		}
+
+		// set single key->value pair
+		else {
+			$this->data[$key] = $value;
+		}
 
 		return $value;
 	}

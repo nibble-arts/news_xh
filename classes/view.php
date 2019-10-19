@@ -6,27 +6,6 @@ namespace news;
 
 class View {
 	
-	private static $text;
-	
-	// init view
-	public static function init ($text) {
-
-		self::$text = $text['news'];
-
-	}
-
-
-	// get multilingual text
-	public static function text ($code) {
-
-		if (isset(self::$text [$code])) {
-			return self::$text [$code];
-		}
-		else {
-			return $code;
-		}
-	}
-
 
 	// return timestamp as human readable date
 	public static function date ($timestamp) {
@@ -85,7 +64,7 @@ class View {
 			if ($edit) {
 
 				$o .= '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $note->get("category") . '&news_file=' . $note->get("file") . '">';
-					$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit.png" title="' . View::text("note_edit") . '">';
+					$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit.png" title="' . Text::get("note_edit") . '">';
 				$o .= '</a>';
 			}
 
@@ -114,7 +93,7 @@ class View {
 
 		$o = '<div class="news_add"><a href="?' . Config::config("note_edit_page") . '">';
 
-			$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/add.png" title="' . View::text("note_add") . '">';
+			$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/add.png" title="' . Text::get("note_add") . '">';
 
 		$o .= '</a></div>';
 
@@ -130,6 +109,8 @@ class View {
 
 		$data = new Note();
 
+		$o .= Message::render();
+
 		// load file to edit
 		if ($file) {
 
@@ -143,11 +124,22 @@ class View {
 		// form
 		$o .= '<form method="post" action="' . '">';
 
-			$o .= '<div if="ta" class="news_title">' . View::text("note_add") . '</div>';
+			if (Session::param("news_file")) {
+				$o .= '<div class="news_title">' . Text::get("note_edit") . '</div>';
+				$o .= '<div class="news_small">ID: ' . Session::param("news_file") . '</div>';
+			}
+
+			else {
+				$o .= '<div class="news_title">' . Text::get("note_add") . '</div>';
+			}
+
+
+			// created
+			$o .= '<div class="news_small">Created: ' . View::htime($data->created()) . '</div>';
 
 
 			$o .= '<div class="news_form_block">';
-				$o .= '<div class="news_label">' . View::text("note_category") . '</div>';
+				$o .= '<div class="news_label">' . Text::get("note_category") . '</div>';
 
 				// get category list
 				Notes::load(Config::config("path_content"));
@@ -156,7 +148,7 @@ class View {
 
 
 			$o .= '<div class="news_form_block">';
-				$o .= '<div class="news_label">' . View::text("note_title") . '</div>';
+				$o .= '<div class="news_label">' . Text::get("note_title") . '</div>';
 
 				$o .= HTML::input([
 					"type" => "text",
@@ -168,7 +160,7 @@ class View {
 
 
 			$o .= '<div class="news_form_block">';
-				$o .= '<div class="news_label">' . View::text("note_text") . '</div>';
+				$o .= '<div class="news_label">' . Text::get("note_text") . '</div>';
 				$o .= HTML::textarea(
 					["name" => "news_text",
 					"rows" => 20,
@@ -184,13 +176,13 @@ class View {
 
 					$o .= HTML::input([
 						"type" => "submit",
-						"value" => View::text("note_add")
+						"value" => Text::get("note_add")
 					]);
 
 					$o .= HTML::input([
 						"type" => "hidden",
 						"name" => "action",
-						"value" => View::text("note_add")
+						"value" => Text::get("note_add")
 					]);
 				}
 
@@ -198,15 +190,21 @@ class View {
 				else {
 					$o .= HTML::input([
 						"type" => "submit",
-						"value" => View::text("note_save")
+						"value" => Text::get("note_save")
 					]);
 
 					$o .= HTML::input([
 						"type" => "hidden",
 						"name" => "action",
-						"value" => View::text("note_update")
+						"value" => Text::get("note_update")
 					]);
 				}
+
+				$o .= HTML::input([
+					"type" => "hidden",
+					"name" => "news_old_cat",
+					"value" => Session::param("news_cat")
+				]);
 
 				$o .= HTML::input([
 					"type" => "hidden",
@@ -225,6 +223,13 @@ class View {
 		$o .= '</form>';
 
 		return $o;
+	}
+
+
+	// show timestamp as human readable time
+	public static function htime($timestamp) {
+
+		return date("j.n.Y G:i", $timestamp);
 	}
 }
 

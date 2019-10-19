@@ -1,4 +1,5 @@
-#News Plugin for CMSimple-XH
+News Plugin for CMSimple-XH
+===========================
 
 ##Notes
 The notes are simple ini files and are organized in categories. Each category is represented by a directory in the content base directory of the plugin. The single notes are separate files inside the corresponding category directory.

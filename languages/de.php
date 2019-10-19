@@ -3,6 +3,8 @@
 $plugin_tx['news']['news']="Aktuelles";
 $plugin_tx['news']['note_add']="Nachricht hinzufügen";
 $plugin_tx['news']['note_edit']="Nachricht bearbeiten";
+$plugin_tx['news']['note_saved']="Nachricht gespeichert";
+$plugin_tx['news']['note_save_failure']="Fehler beim Speichern der Nachricht";
 $plugin_tx['news']['note_title']="Titel der Nachricht";
 $plugin_tx['news']['note_category']="Kategorie";
 $plugin_tx['news']['note_text']="Text";
