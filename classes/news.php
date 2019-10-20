@@ -48,19 +48,27 @@ class News {
 					else {
 						$category = Session::param("news_cat");
 					}
-			
-					// set note data
-					$new_note->set([
-						"category" => $category,
-						"title" => Session::param("news_title"),
-						"text" => Session::param("news_text"),
-						"text" => Session::param("news_text"),
-						"created" => Session::param("news_created"),
-						"modified" => time(),
-						"expired" => Session::param("news_expired")
-					]);
+	
+					// save note if title and text		
+					if (Session::param("news_title") && Session::param("news_text")) {
 
-					$new_note->save($category, Session::param("news_file"));
+						// set note data
+						$new_note->set([
+							"category" => $category,
+							"title" => Session::param("news_title"),
+							"text" => Session::param("news_text"),
+							"start" => Session::param("news_start"),
+							"created" => Session::param("news_created"),
+							"modified" => time(),
+							"expired" => Session::param("news_expired")
+						]);
+
+						$new_note->save($category, Session::param("news_file"));
+					}
+
+					else {
+						Message::failure("note_no_content");
+					}
 				}
 
 

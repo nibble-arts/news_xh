@@ -1,18 +1,18 @@
 function news_init(text) {
 
 	// add user delete window
-	jQuery("form.delete").submit(function (e) {
+	jQuery("form").submit(function (e) {
 
-		if (jQuery(this).find("input.delete[type=submit]:focus").length) {
+		if (jQuery(this).find("input.delete[name='news_button_del_cat']:focus").length) {
 
 			e.preventDefault();
-	
+
 			r = confirm(text);
 
 			if (r) {
-// TODO error in calling submit
-				jQuery(this).submit();
+				// window.location = e.currentTarget.href;
 			}
 		}
+
 	});
 }

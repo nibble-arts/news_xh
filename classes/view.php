@@ -115,7 +115,7 @@ class View {
 		$o = '<script type="text/javascript" src="' . NEWS_PLUGIN_BASE . 'script/news.js"></script>';
 
 		// add to onload
-		$onload .= "news_init('" . Text::delete_confirm() . "');";
+		$onload .= "news_init('" . Text::category_delete_confirm() . "');";
 
 
 		$data = new Note();
@@ -133,7 +133,7 @@ class View {
 
 
 		// form
-		$o .= '<form class="delete" method="post" action="' . '">';
+		$o .= '<form method="post" action="?' . Config::config("note_edit_page") . '">';
 
 			if (Session::param("news_file")) {
 				$o .= '<div class="news_title">' . Text::get("note_edit") . '</div>';
@@ -247,7 +247,7 @@ class View {
 
 				$o .= HTML::input([
 					"type" => "hidden",
-					"name" => "news_expiredd",
+					"name" => "news_expired",
 					"value" => $data->expired()
 				]);
 
