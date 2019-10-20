@@ -115,7 +115,8 @@ class Notes {
 
 				// sort nodes of category
 				if ($order = $options->order()) {
-					$ordered = self::order_by_key($nodes, $key, $dir);
+					// $online = self::online($nodes, $options->online());
+					$ordered = self::order_by_key($online, $key, $dir);
 				}
 				else {
 					$ordered = $nodes;
@@ -135,6 +136,7 @@ class Notes {
 
 			// sort nodes
 			if ($order = $options->order()) {
+				// $online = self::online($order_notes, $options->online());
 				$ordered = self::order_by_key($order_notes, $order, $dir);
 			}
 			else {
@@ -156,6 +158,15 @@ class Notes {
 	}
 
 
+	// return only notes that are online
+	private static function online($notes) {
+
+		$ret_notes = [];
+
+
+	}
+
+
 	// filter notes list
 	private static function filter($notes,$filter) {
 
@@ -167,7 +178,6 @@ class Notes {
 
 			// select filter
 			switch ($filter_ary[0]) {
-
 
 				// limit to n entries
 				case "count":

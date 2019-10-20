@@ -77,7 +77,7 @@ class View {
 			$o .= '</div>';
 
 			// creation date
-			$o .= '<div class="news_date">' . View::date($note->get("created")) . '</div>';
+			$o .= '<div class="news_date">' . View::date($note->start()) . '</div>';
 
 			// text
 			$o .= '<div class="news_text">' . $note->get("text") . '</div>';
@@ -104,8 +104,19 @@ class View {
 	// news form
 	public static function news_form($file = false) {
 
+		global $onload;
+
+
 		$o = "";
 		$new = true;
+
+
+		// return script include
+		$o = '<script type="text/javascript" src="' . NEWS_PLUGIN_BASE . 'script/news.js"></script>';
+
+		// add to onload
+		$onload .= "news_init('" . Text::delete_confirm() . "');";
+
 
 		$data = new Note();
 
@@ -122,7 +133,7 @@ class View {
 
 
 		// form
-		$o .= '<form method="post" action="' . '">';
+		$o .= '<form class="delete" method="post" action="' . '">';
 
 			if (Session::param("news_file")) {
 				$o .= '<div class="news_title">' . Text::get("note_edit") . '</div>';
@@ -135,15 +146,37 @@ class View {
 
 
 			// created
-			$o .= '<div class="news_small">Created: ' . View::htime($data->created()) . '</div>';
+			$o .= '<div class="news_small">created: ' . View::htime($data->created()) . '</div>';
+
+			// online start
+			$o .= '<div class="news_small">start: ' . View::htime($data->start()) . '</div>';
+
+			// expire date
+			$o .= '<div class="news_small">expired: ' . View::htime($data->expired()) . '</div>';
 
 
 			$o .= '<div class="news_form_block">';
-				$o .= '<div class="news_label">' . Text::get("note_category") . '</div>';
+				$o .= '<div class="news_label">' . Text::get("category") . '</div>';
 
 				// get category list
 				Notes::load(Config::config("path_content"));
 				$o .= HTML::select(Notes::get_categories(),["name" => "news_cat", "selected" => Session::param("news_cat")]);
+
+				// modify category
+				$o .= ' ' . HTML::input([
+					"type" => "submit",
+					"name" => "news_button_del_cat",
+					"class" => "delete",
+					"value" => Text::category_delete()
+				]);
+
+				$o .= ' ' . Text::category_new();
+
+				$o .= ' ' . HTML::input([
+					"type" => "text",
+					"name" => "news_new_cat"
+				]);
+
 			$o .= '</div>';
 
 
@@ -229,7 +262,9 @@ class View {
 	// show timestamp as human readable time
 	public static function htime($timestamp) {
 
-		return date("j.n.Y G:i", $timestamp);
+		if (intval($timestamp) > 0) {
+			return date("j.n.Y G:i", $timestamp);
+		}
 	}
 }
 

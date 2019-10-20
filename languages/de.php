@@ -6,7 +6,10 @@ $plugin_tx['news']['note_edit']="Nachricht bearbeiten";
 $plugin_tx['news']['note_saved']="Nachricht gespeichert";
 $plugin_tx['news']['note_save_failure']="Fehler beim Speichern der Nachricht";
 $plugin_tx['news']['note_title']="Titel der Nachricht";
-$plugin_tx['news']['note_category']="Kategorie";
+$plugin_tx['news']['category']="Kategorie";
+$plugin_tx['news']['category_new']="Neue Kategorie";
+$plugin_tx['news']['category_delete']="Kategorie löschen";
+
 $plugin_tx['news']['note_text']="Text";
 $plugin_tx['news']['note_start']="Datum der Publikation";
 $plugin_tx['news']['note_expired']="Ablaufdatum";

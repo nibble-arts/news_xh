@@ -16,11 +16,14 @@ class Note {
 		"expired"
 	];
 
+	private $base_path;
+
 
 	// create note from data array
 	// [title, text, created, modified, start, expired]
 	public function __construct($data = []) {
 
+		$this->base_path = Config::config("path_content") . 'news/';
 		$this->init($data);
 	}
 
@@ -56,6 +59,7 @@ class Note {
 	// save note to file
 	public function save($category, $file = false) {
 
+
 		if (!$this->data["created"]) {
 			$this->data["created"] = time();
 		}
@@ -71,13 +75,12 @@ class Note {
 			$file = uniqid();
 		}
 
-		$cat_path = Config::config("path_content") . 'news/' . $category . '/';
-		$old_cat_path = Config::config("path_content") . 'news/' . Session::param("news_old_cat") . '/';
+		$cat_path = $this->base_path . $category . '/';
+		$old_cat_path = $this->base_path . Session::param("news_old_cat") . '/';
 
-		// if not exists -> create new category
-		if (!file_exists($cat_path)) {
-			mkdir($cat_path);
-		}
+		// add category if don't exist
+		$this->add_category($category);
+
 
 		// has file and category
 		if ($file != "" && $category != "") {
@@ -93,6 +96,7 @@ class Note {
 
 				// if saved and moved to other category -> clear old entry
 				if ($cat_path != $old_cat_path) {
+					Session::set_param("news_cat", $category);
 					unlink($old_cat_path . $file . ".ini");
 				}
 			}
@@ -101,6 +105,17 @@ class Note {
 			else {
 				Message::failure("note_save_failure");
 			}
+		}
+	}
+
+
+	// add category if don't exists
+	public function add_category($category) {
+
+		$path = $this->base_path . $category . "/";
+
+		if (!file_exists($path)) {
+			mkdir($path);
 		}
 	}
 

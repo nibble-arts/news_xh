@@ -76,6 +76,14 @@ class Session {
 	}
 
 
+	// set parameter
+	public static function set_param($key, $value) {
+		self::$params[$key] = $value;
+		unset (self::$get[$key]);
+		unset (self::$post[$key]);
+	}
+
+
 	// remove sesseion/cookie value
 	public static function remove ($key) {
 
