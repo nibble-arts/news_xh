@@ -124,6 +124,10 @@ class Notes {
 				// filter  notes
 				$ordered = self::filter($ordered, $options->filter());	
 
+				// filter published notes
+				// show=all -> shows all notes
+				$ordered = self::filter_online($ordered, $options->show());
+
 				// add to category
 				$order_notes[$key] = $ordered;
 			}
@@ -142,15 +146,14 @@ class Notes {
 			}
 
 
-// debug($ordered);
+			// filter published notes
+			// show=all -> shows all notes
+			$ordered = self::filter_online($ordered, $options->show());
+
 			// apply filter
 			$order_notes = self::filter($ordered, $options->filter());
 		}
 
-
-		// filter published notes
-		// show=all -> shows all notes
-		$order_notes = self::filter_online($order_notes, $options->show());
 
 		return $order_notes;
 	}
