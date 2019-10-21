@@ -115,7 +115,7 @@ class Notes {
 
 				// sort nodes of category
 				if ($order = $options->order()) {
-					// $online = self::online($nodes, $options->online());
+					$online = self::online($nodes, $options->online());
 					$ordered = self::order_by_key($online, $key, $dir);
 				}
 				else {
@@ -136,7 +136,7 @@ class Notes {
 
 			// sort nodes
 			if ($order = $options->order()) {
-				// $online = self::online($order_notes, $options->online());
+				$online = self::online($order_notes, $options->online());
 				$ordered = self::order_by_key($order_notes, $order, $dir);
 			}
 			else {
@@ -163,7 +163,7 @@ class Notes {
 
 		$ret_notes = [];
 
-
+		return $notes;
 	}
 
 

@@ -133,7 +133,7 @@ class View {
 
 
 		// form
-		$o .= '<form method="post" action="?' . Config::config("note_edit_page") . '">';
+		$o .= '<form id="news_form" method="post" action="?' . Config::config("note_edit_page") . '">';
 
 			if (Session::param("news_file")) {
 				$o .= '<div class="news_title">' . Text::get("note_edit") . '</div>';
@@ -230,6 +230,15 @@ class View {
 						"type" => "hidden",
 						"name" => "action",
 						"value" => Text::get("note_update")
+					]);
+				}
+
+				if (Session::param("news_file")) {
+
+					$o .= HTML::input([
+						"type" => "hidden",
+						"name" => "news_file",
+						"value" => Session::param("news_file")
 					]);
 				}
 

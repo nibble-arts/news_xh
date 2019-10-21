@@ -32,6 +32,9 @@ class News {
 				// delete category
 				if (Session::post("news_button_del_cat")) {
 					debug("delete cat " . Session::param("news_cat"));
+
+// TODO delete category directory
+//		category class??? 
 				}
 
 
