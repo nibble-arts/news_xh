@@ -77,7 +77,13 @@ class View {
 			$o .= '</div>';
 
 			// creation date
-			$o .= '<div class="news_date">' . View::date($note->start()) . '</div>';
+			if ($note->start()) {
+				$o .= '<div class="news_date">' . View::date($note->start()) . '</div>';
+			}
+
+			else {
+				$o .= '<div class="news_date news_offline">' . Text::note_offline() . '</div>';
+			}
 
 			// text
 			$o .= '<div class="news_text">' . $note->get("text") . '</div>';
@@ -115,7 +121,7 @@ class View {
 		$o = '<script type="text/javascript" src="' . NEWS_PLUGIN_BASE . 'script/news.js"></script>';
 
 		// add to onload
-		$onload .= "news_init('" . Text::category_delete_confirm() . "');";
+		$onload .= "news_init('" . Text::delete_confirm() . "');";
 
 
 		$data = new Note();
@@ -135,9 +141,10 @@ class View {
 		// form
 		$o .= '<form id="news_form" method="post" action="?' . Config::config("note_edit_page") . '">';
 
+			// title
 			if (Session::param("news_file")) {
-				$o .= '<div class="news_title">' . Text::get("note_edit") . '</div>';
-				$o .= '<div class="news_small">ID: ' . Session::param("news_file") . '</div>';
+				$o .= '<div class="news_title">' . Text::get("note_edit") . '<br>';
+				$o .= '<span class="news_small">ID: ' . Session::param("news_file") . '</span></div>';
 			}
 
 			else {
@@ -145,22 +152,46 @@ class View {
 			}
 
 
-			// created
-			$o .= '<div class="news_small">created: ' . View::htime($data->created()) . '</div>';
+			// dates
+			$o .= '<div class="news_form_block">';
+				$o .= '<div class="news_text">' . Text::note_created() . ': ' . View::htime($data->created()) . '<br>';
 
-			// online start
-			$o .= '<div class="news_small">start: ' . View::htime($data->start()) . '</div>';
+				$o .= Text::note_modified() . ': ' . View::htime($data->modified()) . '<br>';
 
-			// expire date
-			$o .= '<div class="news_small">expired: ' . View::htime($data->expired()) . '</div>';
 
+				// set offline
+				if ($data->start()) {
+
+					$o .= '<span class="news_online">' . Text::note_start() . '</span>: ' . View::htime($data->start());
+
+					$o .= ' ' . HTML::input([
+						"type" => "submit",
+						"name" => "news_button_offline",
+						"value" => Text::note_offline()
+					]);
+				}
+
+				// set online
+				else {
+
+					$o .= '<span class="news_offline">' . Text::note_offline() . '</span>';
+
+					$o .= ' ' . HTML::input([
+						"type" => "submit",
+						"name" => "news_button_online",
+						"value" => Text::note_online()
+					]);
+				}
+				$o .= '<br>';
+
+				$o .= Text::note_expired() . ': ' . View::htime($data->expired()) . '</div>';
+			$o .= '</div>';
 
 			$o .= '<div class="news_form_block">';
 				$o .= '<div class="news_label">' . Text::get("category") . '</div>';
 
 				// get category list
-				Notes::load(Config::config("path_content"));
-				$o .= HTML::select(Notes::get_categories(),["name" => "news_cat", "selected" => Session::param("news_cat")]);
+				$o .= HTML::select(Notes::get_categories(), ["name" => "news_cat", "selected" => Session::param("news_cat")]);
 
 				// modify category
 				$o .= ' ' . HTML::input([
@@ -219,11 +250,20 @@ class View {
 					]);
 				}
 
-				// save changes
 				else {
+					// save changes
+
 					$o .= HTML::input([
 						"type" => "submit",
 						"value" => Text::get("note_save")
+					]);
+
+					// delete note
+					$o .= ' ' . HTML::input([
+						"type" => "submit",
+						"name" => "news_button_del_note",
+						"class" => "delete",
+						"value" => Text::note_delete()
 					]);
 
 					$o .= HTML::input([
@@ -233,12 +273,21 @@ class View {
 					]);
 				}
 
+				// set file name if exists
 				if (Session::param("news_file")) {
-
 					$o .= HTML::input([
 						"type" => "hidden",
 						"name" => "news_file",
 						"value" => Session::param("news_file")
+					]);
+				}
+
+				// set new unique filename for new entry
+				else {
+					$o .= HTML::input([
+						"type" => "hidden",
+						"name" => "news_file",
+						"value" => uniqid()
 					]);
 				}
 
@@ -252,6 +301,12 @@ class View {
 					"type" => "hidden",
 					"name" => "news_created",
 					"value" => $data->created()
+				]);
+
+				$o .= HTML::input([
+					"type" => "hidden",
+					"name" => "news_start",
+					"value" => $data->start()
 				]);
 
 				$o .= HTML::input([

@@ -3,7 +3,7 @@ function news_init(text) {
 	// add user delete window
 	jQuery("form#news_form").submit(function (e) {
 
-		if (jQuery(this).find("input.delete[name='news_button_del_cat']:focus").length) {
+		if (jQuery(this).find("input.delete:focus").length) {
 
 			r = confirm(text);
 

@@ -64,7 +64,7 @@ class Notes {
 					if ($file != "." && $file != "..") {
 
 						// create note
-						// add category
+						// add category to note
 						$data = new Note();
 						$data->load($path . $dir . "/", $file);
 						$data->set("category", $dir);
@@ -102,7 +102,7 @@ class Notes {
 			$order_notes = self::group_by_key($group);
 
 			if ($group_dir = $options->group_dir()) {
-				$order_notes = self::order_group($group_dir);
+				$order_notes = self::order_group($order_notes, $group_dir);
 			}
 		}
 
@@ -115,8 +115,7 @@ class Notes {
 
 				// sort nodes of category
 				if ($order = $options->order()) {
-					$online = self::online($nodes, $options->online());
-					$ordered = self::order_by_key($online, $key, $dir);
+					$ordered = self::order_by_key($nodes, $key, $dir);
 				}
 				else {
 					$ordered = $nodes;
@@ -136,17 +135,22 @@ class Notes {
 
 			// sort nodes
 			if ($order = $options->order()) {
-				$online = self::online($order_notes, $options->online());
 				$ordered = self::order_by_key($order_notes, $order, $dir);
 			}
 			else {
 				$ordered = $order_notes;
 			}
 
-			// filter notes
+
+// debug($ordered);
+			// apply filter
 			$order_notes = self::filter($ordered, $options->filter());
 		}
 
+
+		// filter published notes
+		// show=all -> shows all notes
+		$order_notes = self::filter_online($order_notes, $options->show());
 
 		return $order_notes;
 	}
@@ -155,15 +159,6 @@ class Notes {
 	// get category list
 	public static function get_categories() {
 		return self::$categories;
-	}
-
-
-	// return only notes that are online
-	private static function online($notes) {
-
-		$ret_notes = [];
-
-		return $notes;
 	}
 
 
@@ -198,6 +193,61 @@ class Notes {
 		}
 
 		return $notes;
+	}
+
+
+	// filter online notes
+	// between start and expired
+	public static function filter_online($notes, $options = false) {
+
+		$ret_notes = [];
+
+
+		switch ($options) {
+
+			// show all notes
+			case "all":
+				return $notes;
+				break;
+
+
+			// default: show only published and not expired 
+			default:
+				$current = time();
+
+				foreach ($notes as $note) {
+
+					$start = $note->start();
+					$end = $note->expired();
+
+					// is online
+					if ($start && $start <= $current) {
+
+						// is not expired or no end date
+						if (($end && $current <= $end) || !$end) {
+							$ret_notes[] = $note;
+						}
+					}
+
+				}
+
+				return $ret_notes;
+				break;
+		}
+
+		// 
+	}
+
+
+	// get note by key
+	public static function get_by_key($key, $value) {
+
+		foreach (self::$data as $idx => $entry) {
+
+			if ($entry->get($key) == $value) {
+				return $entry;
+			}
+		}
 	}
 
 
@@ -247,22 +297,23 @@ class Notes {
 
 
 	// order group
-	private static function order_group($dir) {
+	private static function order_group($groups, $dir) {
 
-		$sort_array = self::$data;
+		// $sort_array = self::$data;
 
 		switch (strtolower($dir)) {
 
 			case "asc":
-				ksort($sort_array);
+				uksort($groups, 'strcasecmp');
 				break;
 
 			case "desc":
-				krsort($sort_array);
+				uksort($groups, 'strcasecmp');
+				$groups = array_reverse($groups);
 				break;
 		}
 
-		return $sort_array;
+		return $groups;
 	}
 
 
@@ -285,9 +336,10 @@ class Notes {
 
 			case "desc":
 				krsort($sort_array);
+				// $sort_array = array_reverse($sort_array);
 				break;
 		}
-
+// debug(array_values($sort_array));
 		return array_values($sort_array);
 	}
 }
