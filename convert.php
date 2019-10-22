@@ -14,12 +14,23 @@ foreach ($files as $file) {
 
 		if(pathinfo($file, PATHINFO_EXTENSION) == "csv") {
 
-			echo $file . "<br>";
+			$cat = pathinfo($file, PATHINFO_FILENAME) . "/";
+
+			// echo $file . "<br>";
 			$data = file_get_contents($source . $file);
 
-// echo "<pre>";
-(split($data));
-// echo "</pre>";
+			$list = split($data);
+
+			if (!file_exists($target . $cat))
+				mkdir (strtolower($target . $cat));
+
+			if (count($list)) {
+
+				foreach ($list as $entry) {
+
+					file_put_contents($target . $cat . uniqid() . ".ini", $entry);
+				}
+			}
 		}
 	}
 }
@@ -36,17 +47,45 @@ function split($string) {
 
 	foreach ($ary as $line) {
 
+		$line = htmlspecialchars_decode ($line);
+		
+		$o = "";
+
 		$temp = array_filter(explode("##", $line));
 
-echo "<pre>";
-print_r(explode("#", $temp[0]));
-// print_r($temp);
-echo "</pre>";
+		$one = explode("#",$temp[0]);
 
-echo "<pre>";
-print_r(explode("#", $temp[1]));
-echo "</pre>";
+		$created = $one[0];
+		$title = $one[1];
 
+
+
+		// replace " around text with '
+		if (substr($temp[1],0,1) == "\"") {
+			$temp[1][0] = "'";
+
+			$temp[1][strpos($temp[1], "\"#")] = "'";
+		}
+
+		$two = explode("#", $temp[1]);
+		$start = array_pop($two);
+		$text = implode("", $two);
+
+// echo "<pre>";
+// print_r();
+// echo "</pre>";
+
+
+		$o .= "title = " . $title . "\n";
+		$o .= "text = " . $text . "\n";
+		$o .= "created = " . $created . "\n";
+		$o .= "modified = " . $created . "\n";
+		$o .= "start = ";
+		if ($start > 0) $o .= $start;
+		$o .= "\n";
+		$o .= "expired = \n";
+
+		$ret[] = $o;
 	}
 
 
