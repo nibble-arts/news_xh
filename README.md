@@ -9,7 +9,7 @@ Changing the assignment of a note to a category is simply done by moving it to a
 The format of the note files are of the ini type:
 
 title = "This is the title of the note"
-text = "<p>A description of the note that can contain html code. Special characters must be escaped for correct rendering.</p>"
+text = "`<p>`A description of the note that can contain html code. Special characters must be escaped for correct rendering.`</p>`"
 created = {creation_timestamp}
 modified = {timestamp_of_the_last_modification}
 start = {timestamp_of_publishing}
@@ -18,9 +18,11 @@ expired = {timestamp_of_automatic_expiring}
 ## Plugin-call
 The plugin call can contain two attribute strings:
 
+```php
 news("\{category_list\}"\[,"\{attributes\}"\])
+```
 
-The category list can contain one or more category names, separated by a comma. An empty string will show all notes from all categories.
+The category list can consist one or more category names, separated by a comma. An empty string will show all notes from all categories.
 
 ## Category
 The category parameter has two functions. Primary a comma separated list of categories can filter the corresponding notes. If the paramter is empty, all notes are shown.
@@ -48,7 +50,9 @@ The group_dir parameter (asc/desc) is used for sorting the group values. The gro
 ### filter
 The filter function can be used to reduce the amount of displayed notes. Depending on the filter it can have parameters, that are separated by the : character.
 
+```php
 filter={filtername}\[:param1\[:param2\]\]
+```
 
 If the result is grouped, the filter is applied to each group list separately.
 
