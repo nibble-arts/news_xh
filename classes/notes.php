@@ -129,7 +129,14 @@ class Notes {
 				$ordered = self::filter_online($ordered, $options->show());
 
 				// add to category
-				$order_notes[$key] = $ordered;
+				if (count($ordered)) {
+					$order_notes[$key] = $ordered;
+				}
+
+				// no items -> remove category
+				else {
+					unset ($order_notes[$key]);
+				}
 			}
 		}
 
