@@ -1,78 +1,3 @@
-.news_block {
-	border-bottom: 1px solid grey;
-	margin-bottom: 10px;
-}
-
-.news_form_block {
-	margin-bottom: 10px;
-	border: 1px solid #a0a0a0;
-	padding: 10px;
-}
-
-.news_tab {
-	margin-left: 20px;
-}
-
-.news_title {
-	font-size: 130%;
-	font-weight: bold;
-	margin-bottom: 20px;
-}
-
-.news_label {
-	font-weight: bold;
-}
-
-.news_text {
-
-}
-
-.news_small {
-	font-size: 70%;
-	color: #505050;
-}
-
-.news_category_title {
-	font-size: 120%;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-
-.news_category {
-	font-size: 80%;
-	font-style: italic;
-	font-weight: bold;
-}
-
-.news_date {
-	/*float: right;*/
-	font-size: 80%;
-	/*font-style: italic;*/
-}
-
-.news_add {
-	float: right;
-}
-
-.news_icon {
-	width: 20px;
-	float: right;
-	margin-left: 7px;
-}
-
-.news_offline {
-	color: red;
-}
-
-.news_online {
-	color: green;
-}
-
-.delete {
-	background-color: #ff0000;
-  color: white;
-}
-
 .the-datepicker__container .the-datepicker__main {
   border-top-left-radius: 0;
 }
@@ -81,8 +6,8 @@
   border-bottom-left-radius: 0;
 }
 .the-datepicker__main {
-  background-color: #b6bfd0;
-  border: 1px solid #555;
+  background-color: #fff;
+  border: 1px solid #ccc;
   border-radius: 0.3em;
   padding: 0.4em;
   font-family: Arial, Helvetica, sans-serif;
@@ -100,8 +25,8 @@
   text-align: center;
   font-weight: normal;
   text-transform: uppercase;
-  color: #233759;
-  font-size: 0.6em;
+  color: #666;
+  font-size: 0.85em;
 }
 .the-datepicker__main a.the-datepicker__button {
   display: block;
@@ -111,11 +36,11 @@
   padding: 0.6em 0;
   text-decoration: none;
   text-align: center;
-  color: #233759;
+  color: #007eff;
   border-radius: 0.3em;
 }
 .the-datepicker__main a.the-datepicker__button:hover {
-  background-color: #ff3030;
+  background-color: #d1e8ff;
   text-decoration: none;
 }
 .the-datepicker__main .the-datepicker__title {
@@ -207,10 +132,10 @@
   background-color: transparent;
 }
 .the-datepicker__main td.the-datepicker__day a.the-datepicker__button:hover .the-datepicker__day-content {
-  background-color: #ff3030;
+  background-color: #d1e8ff;
 }
 .the-datepicker__main td.the-datepicker__day--highlighted a.the-datepicker__button .the-datepicker__day-content {
-  background-color: #0000ff;
+  background-color: #d1e8ff;
 }
 .the-datepicker__main td.the-datepicker__day--outside a.the-datepicker__button {
   color: #8ac4ff;
@@ -227,11 +152,11 @@
 }
 .the-datepicker__main td.the-datepicker__day--selected a.the-datepicker__button .the-datepicker__day-content,
 .the-datepicker__main td.the-datepicker__day--selected.the-datepicker__day--highlighted a.the-datepicker__button .the-datepicker__day-content {
-  background-color: #233759;;
+  background-color: #007eff;
 }
 .the-datepicker__main td.the-datepicker__day--selected a.the-datepicker__button:hover .the-datepicker__day-content,
 .the-datepicker__main td.the-datepicker__day--selected.the-datepicker__day--highlighted a.the-datepicker__button:hover .the-datepicker__day-content {
-  background-color: #233759;;
+  background-color: #007eff;
 }
 .the-datepicker__main .the-datepicker__day--weekend,
 .the-datepicker__main .the-datepicker__week-day--weekend,

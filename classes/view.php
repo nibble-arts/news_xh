@@ -119,6 +119,7 @@ class View {
 
 		// return script include
 		$o = '<script type="text/javascript" src="' . NEWS_PLUGIN_BASE . 'script/news.js"></script>';
+		$o .= '<script type="text/javascript" src="' . NEWS_PLUGIN_BASE . 'script/the-datepicker.min.js"></script>';
 
 		// add to onload
 		$onload .= "news_init('" . Text::delete_confirm() . "');";
@@ -154,37 +155,60 @@ class View {
 
 			// dates
 			$o .= '<div class="news_form_block">';
-				$o .= '<div class="news_text">' . Text::note_created() . ': ' . View::htime($data->created()) . '<br>';
+				$o .= '<div class="news_text">';
 
-				$o .= Text::note_modified() . ': ' . View::htime($data->modified()) . '<br>';
+					$o .= Text::note_created() . ': ' . View::htime($data->created()) . '<br>';
+
+					$o .= Text::note_modified() . ': ' . View::htime($data->modified()) . '<br>';
 
 
-				// set offline
-				if ($data->start()) {
+					// set offline
+					if ($data->start()) {
 
-					$o .= '<span class="news_online">' . Text::note_start() . '</span>: ' . View::htime($data->start());
+						$o .= '<span class="news_online">' . Text::note_start() . '</span>: ' . View::htime($data->start());
 
-					$o .= ' ' . HTML::input([
-						"type" => "submit",
-						"name" => "news_button_offline",
-						"value" => Text::note_offline()
-					]);
-				}
+						$o .= ' ' . HTML::input([
+							"type" => "submit",
+							"name" => "news_button_offline",
+							"value" => Text::note_offline()
+						]);
 
-				// set online
-				else {
+						$o .= '<br>';
 
-					$o .= '<span class="news_offline">' . Text::note_offline() . '</span>';
+						// datepicker for expire date
+						// display online or expired
+						if ($data->expired() && time() > $data->expired()) {
+							$o .= '<span class="news_offline">' . Text::note_expired() . '</span>';
+						}
 
-					$o .= ' ' . HTML::input([
-						"type" => "submit",
-						"name" => "news_button_online",
-						"value" => Text::note_online()
-					]);
-				}
-				$o .= '<br>';
+						else {
+							$o .= '<span class="news_online">' . Text::note_running() . '</span>';
+						}
 
-				$o .= Text::note_expired() . ': ' . View::htime($data->expired()) . '</div>';
+						$o .= ' ' . HTML::input([
+							"type" => "input",
+							"name" => "news_expired",
+							"id" => "news_datepicker",
+							"value" => $data->expired()
+						]);
+					}
+
+					// set online
+					else {
+
+						$o .= '<span class="news_offline">' . Text::note_offline() . '</span>';
+
+						$o .= ' ' . HTML::input([
+							"type" => "submit",
+							"name" => "news_button_online",
+							"value" => Text::note_online()
+						]);
+					}
+
+
+
+				$o .= '</div>';
+
 			$o .= '</div>';
 
 			$o .= '<div class="news_form_block">';
@@ -225,8 +249,9 @@ class View {
 
 			$o .= '<div class="news_form_block">';
 				$o .= '<div class="news_label">' . Text::get("note_text") . '</div>';
-				$o .= HTML::textarea(
-					["name" => "news_text",
+				$o .= HTML::textarea([
+					"name" => "news_text",
+					"class" => "news_editor",
 					"rows" => 20,
 					"content" => $data->text()
 				]);
@@ -309,15 +334,16 @@ class View {
 					"value" => $data->start()
 				]);
 
-				$o .= HTML::input([
-					"type" => "hidden",
-					"name" => "news_expired",
-					"value" => $data->expired()
-				]);
+				// $o .= HTML::input([
+				// 	"type" => "hidden",
+				// 	"name" => "news_expired",
+				// 	"value" => $data->expired()
+				// ]);
 
 			$o .= '</div>';
 
 		$o .= '</form>';
+
 
 		return $o;
 	}
@@ -330,6 +356,18 @@ class View {
 			return date("j.n.Y G:i", $timestamp);
 		}
 	}
+
+
+	// convert date d.m.y to timestamp
+	public static function date_to_timestamp($date) {
+
+		$dtime = \DateTime::createFromFormat("d.m.Y", $date);
+
+		if ($dtime) {
+			return $dtime->getTimestamp();
+		}
+	}
+
 }
 
 ?>

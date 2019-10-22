@@ -31,7 +31,7 @@ news\News::init($plugin_cf, $plugin_tx);
 // main plugin function call
 function news($category = false, $options = false) {
 
-	$o = "";
+	$ret = "";
 
 	// create oprions object
 	$options = new news\Options($options);
@@ -46,7 +46,10 @@ function news($category = false, $options = false) {
 	}
 
 	// render notes
-	$o .= news\News::render($category, $options);
+	$ret .= news\News::render($category, $options);
 
-	return $o;
+	// init editor
+	init_editor(["news_editor"]);
+
+	return $ret;
 }

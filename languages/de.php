@@ -4,7 +4,8 @@ $plugin_tx['news']['news']="Aktuelles";
 $plugin_tx['news']['note_created']="Erstellung";
 $plugin_tx['news']['note_start']="Publiziert";
 $plugin_tx['news']['note_modified']="Letzte Änderung";
-$plugin_tx['news']['note_expired']="Ablaufdatum";
+$plugin_tx['news']['note_running']="läuft";
+$plugin_tx['news']['note_expired']="abgelaufen";
 
 $plugin_tx['news']['note_online']="Publizieren";
 $plugin_tx['news']['note_offline']="Offline";
