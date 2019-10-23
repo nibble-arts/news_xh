@@ -221,7 +221,7 @@ class View {
 				$o .= ' ' . HTML::input([
 					"type" => "submit",
 					"name" => "news_button_del_cat",
-					"class" => "delete",
+					"class" => "news_delete",
 					"value" => Text::category_delete()
 				]);
 
@@ -287,7 +287,7 @@ class View {
 					$o .= ' ' . HTML::input([
 						"type" => "submit",
 						"name" => "news_button_del_note",
-						"class" => "delete",
+						"class" => "news_delete",
 						"value" => Text::note_delete()
 					]);
 
