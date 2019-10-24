@@ -8,7 +8,7 @@ class Category {
 	private static $base_path;
 
 	public static function init() {
-		self::$base_path = Config::config("path_content") . 'news/';
+		self::$base_path = Config::path_content() . 'news/';
 	}
 
 

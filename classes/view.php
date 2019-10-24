@@ -21,7 +21,7 @@ class View {
 
 		$note_array = [];
 
-		Notes::load(Config::config("path_content"), $category);
+		Notes::load(Config::path_content(), $category);
 		$notes = Notes::get_notes($options);
 
 
@@ -63,7 +63,7 @@ class View {
 			// add edit link
 			if ($edit) {
 
-				$o .= '<a href="?' . Config::config("note_edit_page") . '&news_cat=' . $note->get("category") . '&news_file=' . $note->get("file") . '">';
+				$o .= '<a href="?' . Config::note_edit_page() . '&news_cat=' . $note->get("category") . '&news_file=' . $note->get("file") . '">';
 					$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/edit.png" title="' . Text::get("note_edit") . '">';
 				$o .= '</a>';
 			}
@@ -97,7 +97,7 @@ class View {
 	// add note dialog
 	public static function add_note() {
 
-		$o = '<div class="news_add"><a href="?' . Config::config("note_edit_page") . '">';
+		$o = '<div class="news_add"><a href="?' . Config::note_edit_page() . '">';
 			$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/add.png" title="' . Text::get("note_add") . '">';
 		$o .= '</a></div>';
 
@@ -133,12 +133,12 @@ class View {
 			$file = $file . ".ini";
 			$new = false;
 
-			$data->load(Config::config("path_content") . 'news/', $file);
+			$data->load(Config::path_content() . 'news/', $file);
 		}
 
 
 		// form
-		$o .= '<form id="news_form" method="post" action="?' . Config::config("note_edit_page") . '">';
+		$o .= '<form id="news_form" method="post" action="?' . Config::note_edit_page() . '">';
 
 			// title
 			if (Session::param("news_file")) {

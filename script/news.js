@@ -4,7 +4,7 @@ function news_init(text) {
 	// add delete window confirmation
 	jQuery("form#news_form").submit(function (e) {
 
-		if (jQuery(this).find("input.delete:focus").length) {
+		if (jQuery(this).find("input.news_delete:focus").length) {
 
 			r = confirm(text);
 

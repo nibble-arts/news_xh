@@ -40,7 +40,7 @@ function news($category = false, $options = false) {
 	// memberaccess installed
 	// and logged
 	// and user is in news access group
-	if (class_exists("ma\Access") && ma\Access::user() && ma\Groups::user_is_in_group(ma\Access::user()->username(), news\Config::config("access_admin_group"))) {
+	if (class_exists("ma\Access") && ma\Access::user() && ma\Groups::user_is_in_group(ma\Access::user()->username(), news\Config::access_admin_group())) {
 
 		$options->set("edit", "true");
 	}
