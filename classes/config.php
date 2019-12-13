@@ -14,7 +14,7 @@ class Config {
 
 
 	// get config parameter
-	public static function config($name = false) {
+	public static function get($name = false) {
 
 		if (isset(self::$config[$name])) {
 			return self::$config[$name];
@@ -27,6 +27,12 @@ class Config {
 		else {
 			return false;
 		}
+	}
+
+
+	// user magic method
+	public static function __callStatic($name, $attr) {
+		return self::get($name);
 	}
 }
 

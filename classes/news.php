@@ -14,7 +14,7 @@ class News {
 		Text::init($text["news"]);
 		Session::load();
 		Category::init();
-		Notes::load(Config::config("path_content"));
+		Notes::load(Config::path_content());
 
 		self::action();
 
