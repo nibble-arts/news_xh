@@ -98,9 +98,7 @@ class View {
 	public static function add_note() {
 
 		$o = '<div class="news_add"><a href="?' . Config::config("note_edit_page") . '">';
-
 			$o .= '<img class="news_icon" src="' . NEWS_PLUGIN_BASE . 'images/add.png" title="' . Text::get("note_add") . '">';
-
 		$o .= '</a></div>';
 
 		return $o;
@@ -221,7 +219,7 @@ class View {
 				$o .= ' ' . HTML::input([
 					"type" => "submit",
 					"name" => "news_button_del_cat",
-					"class" => "delete",
+					"class" => "news_delete",
 					"value" => Text::category_delete()
 				]);
 
@@ -287,7 +285,7 @@ class View {
 					$o .= ' ' . HTML::input([
 						"type" => "submit",
 						"name" => "news_button_del_note",
-						"class" => "delete",
+						"class" => "news_delete",
 						"value" => Text::note_delete()
 					]);
 
